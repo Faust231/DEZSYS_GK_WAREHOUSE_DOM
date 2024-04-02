@@ -48,7 +48,15 @@ public class Application implements CommandLineRunner {
 		pd2.add(new ProductData("2", "03-445566", "Mr. Proper Allzweckreiniger", "Reinigung", 6200));
 
 		repository.save(new WarehouseData("2", "Graz Hauptplatz", "2222", "8010", "Graz", "Austria", pd2));
-		// save a couple of product data
+
+		List<ProductData> pd3 = new ArrayList<>();
+
+		pd3.add(new ProductData("3", "00-778899", "Apfelschorle Frisch", "Getraenk", 2500));
+		pd3.add(new ProductData("3", "01-778899", "Vanish Oxi Action Fleckenentferner", "Waschmittel", 600));
+		pd3.add(new ProductData("3", "02-778899", "Whiskas Katzenfutter Lachs", "Tierfutter", 1100));
+		pd3.add(new ProductData("3", "03-778899", "Cif Power & Shine Badreiniger", "Reinigung", 8000));
+
+		repository.save(new WarehouseData("3", "Vienna Westbahnhof", "3333", "1150", "Vienna", "Austria", pd3));
 		/*
 		repository.save(new ProductData("1", "00-112233", "Bio Erdbeersaft Sonne", "Getraenk", 2100));
 		repository.save(new ProductData("2", "00-445566", "Bio Himbeersaft Sonne", "Getraenk", 2650));
@@ -113,6 +121,11 @@ public class Application implements CommandLineRunner {
 		System.out.println("Record(s) found with findByWarehouseID(\"1\"):");
 		System.out.println("--------------------------------");
 		System.out.println(repository.findByWarehouseID("1"));
+
+		// Fetch all product from Warehouse 2
+		System.out.println("Record(s) found with findByWarehouseID(\"2\"):");
+		System.out.println("--------------------------------");
+		System.out.println(repository.findByWarehouseID("2"));
 	}
 
 }
