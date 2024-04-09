@@ -26,7 +26,7 @@ Die detaillierte [Aufgabenstellung](TASK.md) beschreibt die notwendigen Schritte
 
 + Nennen Sie 4 Nachteile eines NoSQL Repository im Gegensatz zu einem relationalen DBMS
 
-- Standardisierung: Fehlt, was Lernkurve erhöht.
+- Standardisierung: Fehlt, Lernkurve hoch
 - Transaktionen: Eingeschränkte ACID-Transaktionsunterstützung.
 - Konsistenz: Eventual Consistency kann zu Inkonsistenzen führen.
 - Analysefähigkeit: Weniger robuste Abfrage- und Berichtsfunktionen.
@@ -36,12 +36,11 @@ Die detaillierte [Aufgabenstellung](TASK.md) beschreibt die notwendigen Schritte
 Unterschiede in Datenmodellen, Konsistenz und Skalierungsstrategien erschweren die Integration.
 
 + Welche Arten von NoSQL Datenbanken gibt es?
-+ Nennen Sie einen Vertreter für jede Art?
-
-- Dokument: MongoDB
-- Schlüssel-Wert: Redis
-- Spaltenorientiert: Cassandra
-- Graph: Neo4j
+  - Dokumentenorientierte Datenbanken (z.B. MongoDB, Couchbase)
+  - Spaltenorientierte Datenbanken (z.B. Apache Cassandra, HBase)
+  - Schlüssel-Wert-Datenbanken (z.B. Redis, DynamoDB)
+  - Graphdatenbanken (z.B. Neo4j, Amazon Neptune)
+  - Multimodale Datenbanken (z.B. OrientDB, ArangoDB)
 
 + Beschreiben Sie die Abkürzungen CA, CP und AP in Bezug auf das CAP Theorem
 
@@ -52,15 +51,30 @@ Unterschiede in Datenmodellen, Konsistenz und Skalierungsstrategien erschweren d
 + Mit welchem Befehl koennen Sie den Lagerstand eines Produktes aller Lagerstandorte anzeigen.
 
 Aller Lagerstandorte:
-```sql
-SELECT SUM(lagerstand) FROM lager WHERE produktID = 'X';
+```
+db.warehouseData.aggregate([
+    { $unwind: "$productData" }, // Unwind the productData array
+    { 
+        $group: { 
+            _id: "$productData.productName", // Group by productID
+            totalProductQuantity: { $sum: "$productData.productQuantity" } // Calculate the sum of productQuantity for each product
+        } 
+    }
+])
+
 ```
 
 + Mit welchem Befehl koennen Sie den Lagerstand eines Produktes eines bestimmten Lagerstandortes anzeigen.
 
 Eines bestimmten Lagerstandortes:
 ```sql
-SELECT lagerstand FROM lager WHERE produktID = 'X' AND lagerortID = 'Y';
+db.warehouseData.find({
+    "warehouseID": "1",
+    "productData.productName": "Whiskas Katzenfutter Huhn"
+}, {
+    "productData.$": 1
+})
+
 ```
 
 ### GKv
